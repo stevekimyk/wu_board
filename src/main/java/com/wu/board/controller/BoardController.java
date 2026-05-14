@@ -53,6 +53,15 @@ public class BoardController {
 
     private static final int PAGE_SIZE = 10;
 
+    // 사원 상세 (GET /board/list?id=사원번호)
+    @GetMapping(value = "/list", params = "id")
+    public String empDetail(@RequestParam("id") String empno, Model model) {
+        PsnlPhoto p = psnlPhotoMapper.selectByEmpno(empno);
+        model.addAttribute("emp", p);
+        model.addAttribute("empno", empno);
+        return "board/emp-detail";
+    }
+
     // 게시글 목록
     @GetMapping("/list")
     public String list(@RequestParam(value = "type",       required = false, defaultValue = "free") String type,
