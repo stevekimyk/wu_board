@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="com.wu.board.mapper.PsnlPhotoMapper">
+<!--
+    동작 원리
+    MyBatis가 SQL 실행 후 결과 행을 처리하는 흐름:
 
-    <select id="selectAll" resultType="com.wu.board.dto.PsnlPhoto">
+    각 행(row)마다 resultType에 지정된 클래스의 인스턴스를 생성
+    컬럼명과 DTO의 **필드명(또는 setter)**을 매칭해서 값을 채움
+    List로 반환 (여러 행이면 List<PsnlPhoto>)
+-->
+    <select id="selectAll" resultType="PsnlPhoto">
         SELECT empno
              , wu_cmm.codenm.emp(empno) AS empno_nm
              , photo
@@ -13,8 +19,11 @@
         ORDER BY empno
     </select>
 
-    <!-- 10개씩 페이징 -->
-    <select id="selectPage" parameterType="map" resultType="com.wu.board.dto.PsnlPhoto">
+    <!-- 10개씩 페이징
+        parameterType="map" 이걸호출할때 넘길인자가 map형식으로 있다는 것임
+        resultType="com.wu.board.dto.PsnlPhoto" : 결과값을 PsnlPhoto DTO에 담음
+    -->
+    <select id="selectPage" parameterType="map" resultType="PsnlPhoto">
         SELECT empno
              , empno_nm
              , dept_no
@@ -60,7 +69,7 @@
           </if>
     </select>
 
-    <select id="selectByEmpno" parameterType="String" resultType="com.wu.board.dto.PsnlPhoto">
+    <select id="selectByEmpno" parameterType="String" resultType="PsnlPhoto">
         SELECT a.empno
              , b.kor_nm                          AS empno_nm
              , b.dept_no
