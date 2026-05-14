@@ -1,0 +1,22 @@
+${AnsiColor.BRIGHT_RED}
+
+   SSSSSSSSSSSSSSS      tttt                                                                           KKKKKKKKK    KKKKKKK  iiii
+ SS:::::::::::::::S  ttt:::t                                                                           K:::::::K    K:::::K i::::i
+S:::::SSSSSS::::::S  t:::::t                                                                           K:::::::K    K:::::K  iiii
+S:::::S     SSSSSSS  t:::::t                                                                           K:::::::K   K::::::K
+S:::::S        ttttttt:::::ttttttt        eeeeeeeeeeee  vvvvvvv           vvvvvvv eeeeeeeeeeee         KK::::::K  K:::::KKKiiiiiii    mmmmmmm    mmmmmmm
+S:::::S        t:::::::::::::::::t      ee::::::::::::ee v:::::v         v:::::vee::::::::::::ee         K:::::K K:::::K   i:::::i  mm:::::::m  m:::::::mm
+ S::::SSSS     t:::::::::::::::::t     e::::::eeeee:::::eev:::::v       v:::::ve::::::eeeee:::::ee       K::::::K:::::K     i::::i m::::::::::mm::::::::::m
+  SS::::::SSSSStttttt:::::::tttttt    e::::::e     e:::::e v:::::v     v:::::ve::::::e     e:::::e       K:::::::::::K      i::::i m::::::::::::::::::::::m
+    SSS::::::::SS    t:::::t          e:::::::eeeee::::::e  v:::::v   v:::::v e:::::::eeeee::::::e       K:::::::::::K      i::::i m:::::mmm::::::mmm:::::m
+       SSSSSS::::S   t:::::t          e:::::::::::::::::e    v:::::v v:::::v  e:::::::::::::::::e        K::::::K:::::K     i::::i m::::m   m::::m   m::::m
+            S:::::S  t:::::t          e::::::eeeeeeeeeee      v:::::v:::::v   e::::::eeeeeeeeeee         K:::::K K:::::K    i::::i m::::m   m::::m   m::::m
+            S:::::S  t:::::t    tttttte:::::::e                v:::::::::v    e:::::::e                KK::::::K  K:::::KKK i::::i m::::m   m::::m   m::::m
+SSSSSSS     S:::::S  t::::::tttt:::::te::::::::e                v:::::::v     e::::::::e               K:::::::K   K::::::Ki::::::im::::m   m::::m   m::::m
+S::::::SSSSSS:::::S  tt::::::::::::::t e::::::::eeeeeeee         v:::::v       e::::::::eeeeeeee       K:::::::K    K:::::Ki::::::im::::m   m::::m   m::::m
+S:::::::::::::::SS     tt:::::::::::tt  ee:::::::::::::e          v:::v         ee:::::::::::::e       K:::::::K    K:::::Ki::::::im::::m   m::::m   m::::m
+ SSSSSSSSSSSSSSS         ttttttttttt      eeeeeeeeeeeeee           vvv            eeeeeeeeeeeeee       KKKKKKKKK    KKKKKKKiiiiiiiimmmmmm   mmmmmm   mmmmmm
+
+${AnsiColor.BRIGHT_YELLOW}
+:: Spring Boot ${AnsiColor.RED} ${spring-boot.version} ${AnsiColor.DEFAULT}::
+:: By ${AnsiColor.YELLOW}Steve Kim's${AnsiColor.DEFAULT} Wonkwang University ::

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wu.board.mapper.PsnlPhotoMapper">
+
+    <select id="selectAll" resultType="com.wu.board.dto.PsnlPhoto">
+        SELECT empno
+             , wu_cmm.codenm.emp(empno) AS empno_nm
+             , photo
+             , inp_id
+        FROM WU_ADM.TA_PSNL_PHOTO_TEST
+        ORDER BY empno
+    </select>
+
+    <!-- 10개씩 페이징 -->
+    <select id="selectPage" parameterType="map" resultType="com.wu.board.dto.PsnlPhoto">
+        SELECT empno
+             , empno_nm
+             , dept_no
+             , dept_no_nm
+             , photo
+        FROM (
+                 SELECT a.empno
+                      , b.kor_nm                          AS empno_nm
+                      , b.dept_no
+                      , wu_cmm.codenm.dept(b.dept_no)    AS dept_no_nm
+                      , a.photo
+                      , ROW_NUMBER() OVER (ORDER BY b.dept_no, a.empno) AS rn
+                 FROM wu_adm.ta_psnl_photo_test a
+                          LEFT JOIN emp_mstr b ON a.empno = b.empno
+                 WHERE b.sclpst_sttus_cd IN ('3050100','3050200')
+                   AND b.kor_nm IS NOT NULL
+                   AND b.dept_no IS NOT NULL
+                   AND a.photo IS NOT NULL
+                   <if test="searchType == 'empno' and keyword != null and keyword != ''">
+                       AND a.empno LIKE '%' || #{keyword} || '%'
+                   </if>
+                   <if test="searchType == 'empnoNm' and keyword != null and keyword != ''">
+                       AND b.kor_nm LIKE '%' || #{keyword} || '%'
+                   </if>
+        )
+        WHERE rn BETWEEN #{startRow} AND #{endRow}
+        ORDER BY dept_no, empno
+    </select>
+
+    <select id="selectCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM wu_adm.ta_psnl_photo_test a
+                 LEFT JOIN emp_mstr b ON a.empno = b.empno
+        WHERE b.sclpst_sttus_cd IN ('3050100','3050200')
+          AND b.kor_nm IS NOT NULL
+          AND b.dept_no IS NOT NULL
+          AND a.photo IS NOT NULL
+          <if test="searchType == 'empno' and keyword != null and keyword != ''">
+              AND a.empno LIKE '%' || #{keyword} || '%'
+          </if>
+          <if test="searchType == 'empnoNm' and keyword != null and keyword != ''">
+              AND b.kor_nm LIKE '%' || #{keyword} || '%'
+          </if>
+    </select>
+
+    <select id="selectByEmpno" parameterType="String" resultType="com.wu.board.dto.PsnlPhoto">
+        SELECT a.empno
+             , b.kor_nm                          AS empno_nm
+             , b.dept_no
+             , wu_cmm.codenm.dept(b.dept_no)    AS dept_no_nm
+             , a.photo
+        FROM wu_adm.ta_psnl_photo_test a
+                 LEFT JOIN emp_mstr b ON a.empno = b.empno
+        WHERE a.empno = #{empno}
+    </select>
+
+</mapper>
