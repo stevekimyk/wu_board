@@ -23,16 +23,6 @@
         .board-card .list-group-item { font-size: .9rem; padding: .55rem 1rem; }
         .board-card .list-group-item:hover { background-color: #f1f5f9; }
 
-        .stat-box {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,.08);
-            padding: 20px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .stat-box .stat-number { font-size: 1.8rem; font-weight: 700; color: #3498db; }
-        .stat-box .stat-label  { font-size: .82rem; color: #6c757d; }
     </style>
 </head>
 <body>
@@ -43,19 +33,16 @@
 <div class="hero">
     <div class="container">
         <h1><i class="bi bi-people-fill me-2"></i>교직원 사내 연락처 공유하기</h1>
-        <p class="mt-2 mb-4">공지사항, 자유게시판, 질문/답변 등 다양한 게시판을 이용해보세요.</p>
+        <p class="mt-2 mb-4">공지사항, 교직원 연락처 게시판, 질문/답변 등 다양한 게시판을 이용해보세요.</p>
         <a href="/board/write?type=free" class="btn btn-light btn-lg me-2">
             <i class="bi bi-pencil-square me-1"></i>글쓰기
-        </a>
-        <a href="/signup" class="btn btn-outline-light btn-lg">
-            <i class="bi bi-person-plus me-1"></i>회원가입
         </a>
     </div>
 </div>
 
 <div class="container my-5">
     <div class="row g-4">
-        <div class="col-lg-8">
+        <div class="col-12">
 
             <!-- 공지사항 -->
             <div class="card board-card mb-4">
@@ -79,10 +66,10 @@
                 </ul>
             </div>
 
-            <!-- 자유게시판 -->
+            <!-- 교직원 연락처 게시판 -->
             <div class="card board-card mb-4">
                 <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                    <span><i class="bi bi-chat-dots-fill me-2"></i>자유게시판</span>
+                    <span><i class="bi bi-chat-dots-fill me-2"></i>교직원 연락처 게시판</span>
                     <a href="/board/list?type=free" class="btn btn-sm btn-outline-light">더보기</a>
                 </div>
                 <ul class="list-group list-group-flush">
@@ -104,91 +91,6 @@
                 </ul>
             </div>
 
-            <!-- 질문/답변 -->
-            <div class="card board-card mb-4">
-                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
-                    <span><i class="bi bi-patch-question-fill me-2"></i>질문/답변</span>
-                    <a href="/board/list?type=qna" class="btn btn-sm btn-outline-light">더보기</a>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <a href="/board/detail/98" class="text-decoration-none text-dark">
-                            JPA와 MyBatis 중 뭐가 나을까요?
-                            <span class="badge bg-danger badge-new ms-1">NEW</span>
-                        </a>
-                        <small class="text-muted">박개발 · 댓글 3</small>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <a href="/board/detail/97" class="text-decoration-none text-dark">Oracle 연결 에러 해결 방법</a>
-                        <small class="text-muted">최테크 · 댓글 7</small>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <a href="/board/detail/96" class="text-decoration-none text-dark">Thymeleaf 변수 바인딩 질문</a>
-                        <small class="text-muted">정스프링 · 댓글 2</small>
-                    </li>
-                </ul>
-            </div>
-
-        </div>
-
-        <!-- 사이드바 -->
-        <div class="col-lg-4">
-            <div class="stat-box">
-                <div class="row text-center">
-                    <div class="col-4">
-                        <div class="stat-number">1,284</div>
-                        <div class="stat-label">전체 회원</div>
-                    </div>
-                    <div class="col-4">
-                        <div class="stat-number">348</div>
-                        <div class="stat-label">오늘 게시글</div>
-                    </div>
-                    <div class="col-4">
-                        <div class="stat-number">57</div>
-                        <div class="stat-label">지금 접속</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card board-card mb-4">
-                <div class="card-header bg-secondary text-white">
-                    <i class="bi bi-lightning-charge-fill me-2"></i>빠른 메뉴
-                </div>
-                <div class="list-group list-group-flush">
-                    <a href="/board/write?type=free" class="list-group-item list-group-item-action">
-                        <i class="bi bi-pencil me-2 text-primary"></i>글쓰기
-                    </a>
-                    <a href="/mypage" class="list-group-item list-group-item-action">
-                        <i class="bi bi-person me-2 text-success"></i>마이페이지
-                    </a>
-                    <a href="/message" class="list-group-item list-group-item-action">
-                        <i class="bi bi-envelope me-2 text-warning"></i>쪽지함
-                    </a>
-                    <a href="/scraps" class="list-group-item list-group-item-action">
-                        <i class="bi bi-bookmark me-2 text-danger"></i>스크랩
-                    </a>
-                </div>
-            </div>
-
-            <div class="card board-card">
-                <div class="card-header bg-warning text-dark">
-                    <i class="bi bi-fire me-2"></i>인기 게시글
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        <span class="badge bg-danger me-1">1</span>
-                        <a href="/board/detail/101" class="text-decoration-none text-dark">오늘 점심 뭐 먹었나요?</a>
-                    </li>
-                    <li class="list-group-item">
-                        <span class="badge bg-secondary me-1">2</span>
-                        <a href="/board/detail/99" class="text-decoration-none text-dark">Spring Boot 공부 팁</a>
-                    </li>
-                    <li class="list-group-item">
-                        <span class="badge bg-secondary me-1">3</span>
-                        <a href="/board/detail/100" class="text-decoration-none text-dark">카페 추천해주세요</a>
-                    </li>
-                </ul>
-            </div>
         </div>
     </div>
 </div>
