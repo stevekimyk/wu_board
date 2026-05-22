@@ -30,7 +30,7 @@ public class BoardController {
         if (type == null) return "전체 게시판";
         switch (type) {
             case "notice":  return "공지사항";
-            case "free":    return "자유게시판";
+            case "free":    return "교직원 연락처 게시판";
             case "qna":     return "질문/답변";
             case "gallery": return "갤러리";
             default:        return "전체 게시판";
