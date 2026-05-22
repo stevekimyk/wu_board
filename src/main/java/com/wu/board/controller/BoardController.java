@@ -92,8 +92,10 @@ public class BoardController {
             model.addAttribute("totalCount", totalCount);
             model.addAttribute("totalPages", totalPages);
             model.addAttribute("curPage",    page);
-        } else {
+        } else if ("notice".equals(type)) {
             model.addAttribute("postList", dummyList(type));
+        } else {
+            model.addAttribute("postList", new ArrayList<>());
         }
         return "board/list";
     }
@@ -133,10 +135,8 @@ public class BoardController {
         return "board/write";
     }
 
-    // 게시글 작성 처리 (DB 연동 전: 일단 목록으로 리다이렉트)
     @PostMapping("/write")
     public String write(@ModelAttribute Post post) {
-        // TODO: MyBatis insert 호출
         return "redirect:/board/list?type=" + (post.getBoardType() == null ? "free" : post.getBoardType());
     }
 

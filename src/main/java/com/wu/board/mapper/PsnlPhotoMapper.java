@@ -8,7 +8,6 @@ import java.util.Map;
 
 @Mapper
 public interface PsnlPhotoMapper {
-    List<PsnlPhoto> selectAll();
     List<PsnlPhoto> selectPage(Map<String, Object> param);
     int selectCount(Map<String, Object> param);
     PsnlPhoto selectByEmpno(String empno);
