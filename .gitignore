@@ -39,6 +39,7 @@ out/
 ### Sensitive config (DB credentials) ###
 src/main/resources/application.properties
 src/main/resources/application-clone.yml
+src/main/resources/application.yml
 
 ### Claude Code ###
 .claude/
