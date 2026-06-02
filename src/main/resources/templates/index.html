@@ -3,94 +3,221 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>진하가족 커뮤니티 게시판 - 홈</title>
+    <title>원광보건대학교 교직원 커뮤니티</title>
     <th:block th:replace="~{fragments/layout :: css}"></th:block>
     <style>
+        /* ── 히어로 ── */
         .hero {
-            background: linear-gradient(135deg, #2c3e50, #3498db);
+            background: linear-gradient(150deg, #4a1a6b 0%, #7b3fa0 45%, #3a6abf 100%);
             color: white;
-            padding: 60px 0 50px;
+            padding: 70px 0 60px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
-        .hero h1 { font-size: 2.2rem; font-weight: 700; }
-        .hero p  { font-size: 1.05rem; opacity: 0.85; }
-
-        .board-card { transition: transform .2s, box-shadow .2s; cursor: pointer; }
-        .board-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 6px 18px rgba(0,0,0,.14);
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
-        .board-card .list-group-item { font-size: .9rem; padding: .55rem 1rem; }
-        .board-card .list-group-item:hover { background-color: #f1f5f9; }
+        .hero-icon-row {
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            margin-bottom: 28px;
+        }
+        .hero-icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            opacity: 0.82;
+            font-size: .8rem;
+            letter-spacing: .03em;
+        }
+        .hero-icon-item i {
+            font-size: 2rem;
+            background: rgba(255,255,255,.15);
+            border-radius: 50%;
+            padding: 14px;
+            width: 58px;
+            height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero h1 { font-size: 2.3rem; font-weight: 800; letter-spacing: -.02em; }
+        .hero .lead { font-size: 1.05rem; opacity: .85; max-width: 520px; margin: 0 auto 28px; }
+        .btn-contact {
+            background: #fff;
+            color: #4a1a6b;
+            font-weight: 700;
+            font-size: 1.05rem;
+            padding: 14px 38px;
+            border-radius: 50px;
+            border: none;
+            box-shadow: 0 4px 18px rgba(0,0,0,.25);
+            transition: transform .2s, box-shadow .2s;
+            text-decoration: none;
+        }
+        .btn-contact:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,.3);
+            color: #4a1a6b;
+        }
 
+        /* ── 특징 카드 ── */
+        .feature-card {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,.08);
+            transition: transform .2s, box-shadow .2s;
+            height: 100%;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,.14);
+        }
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.7rem;
+            margin: 0 auto 16px;
+        }
+        .feature-card h5 { font-weight: 700; font-size: 1rem; }
+        .feature-card p  { font-size: .88rem; color: #6c757d; margin: 0; }
+
+        /* ── 배너 ── */
+        .campus-banner {
+            background: linear-gradient(135deg, #f8f3ff, #eef4ff);
+            border-radius: 20px;
+            padding: 48px 36px;
+            text-align: center;
+            border: 1px solid #e2d9f3;
+        }
+        .campus-banner h4 { font-weight: 700; color: #4a1a6b; }
+        .campus-banner p  { color: #555; font-size: .92rem; }
+
+        /* 섹션 구분선 */
+        .section-label {
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: #7b3fa0;
+        }
     </style>
 </head>
 <body>
 
 <nav th:replace="~{fragments/layout :: navbar('home')}"></nav>
 
-<!-- 히어로 -->
+<!-- ── 히어로 ── -->
 <div class="hero">
-    <div class="container">
-        <h1><i class="bi bi-people-fill me-2"></i>교직원 사내 연락처 공유하기</h1>
-        <p class="mt-2 mb-4">공지사항, 교직원 연락처 게시판, 질문/답변 등 다양한 게시판을 이용해보세요.</p>
-        <a href="/board/write?type=free" class="btn btn-light btn-lg me-2">
-            <i class="bi bi-pencil-square me-1"></i>글쓰기
+    <div class="container position-relative">
+        <div class="hero-icon-row">
+            <div class="hero-icon-item">
+                <i class="bi bi-mortarboard-fill"></i>
+                <span>교육</span>
+            </div>
+            <div class="hero-icon-item">
+                <i class="bi bi-hospital-fill"></i>
+                <span>보건</span>
+            </div>
+            <div class="hero-icon-item">
+                <i class="bi bi-people-fill"></i>
+                <span>교직원</span>
+            </div>
+            <div class="hero-icon-item">
+                <i class="bi bi-heart-pulse-fill"></i>
+                <span>복지</span>
+            </div>
+        </div>
+        <h1><i class="bi bi-building-fill me-2"></i>원광보건대학교</h1>
+        <p class="lead mt-2">교직원 커뮤니티 포털 · 원광보건대 교직원들의 소통 공간입니다.</p>
+        <a href="/board/list?type=free" class="btn-contact">
+            <i class="bi bi-person-lines-fill me-2"></i>교직원 연락처 게시판 바로가기
         </a>
     </div>
 </div>
 
+<!-- ── 특징 카드 ── -->
 <div class="container my-5">
-    <div class="row g-4">
-        <div class="col-12">
+    <p class="section-label text-center mb-4">주요 서비스</p>
+    <div class="row g-4 justify-content-center">
 
-            <!-- 공지사항 -->
-            <div class="card board-card mb-4">
-                <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
-                    <span><i class="bi bi-megaphone-fill me-2"></i>공지사항</span>
-                    <a href="/board/list?type=notice" class="btn btn-sm btn-outline-light">더보기</a>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card feature-card p-4 text-center">
+                <div class="feature-icon bg-purple-soft mx-auto" style="background:#f3e8ff;">
+                    <i class="bi bi-person-lines-fill" style="color:#7b3fa0;"></i>
                 </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item d-flex justify-content-between">
-                        <a href="/board/detail/1" class="text-decoration-none text-dark">서비스 점검 안내 (5/10 02:00~04:00)</a>
-                        <small class="text-muted">2026-05-07</small>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between">
-                        <a href="/board/detail/2" class="text-decoration-none text-dark">개인정보처리방침 개정 안내</a>
-                        <small class="text-muted">2026-05-01</small>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between">
-                        <a href="/board/detail/3" class="text-decoration-none text-dark">5월 이벤트 안내</a>
-                        <small class="text-muted">2026-04-28</small>
-                    </li>
-                </ul>
+                <h5>교직원 연락처</h5>
+                <p>부서별 교직원 사진·연락처를 한눈에 조회하세요.</p>
+                <a href="/board/list?type=free" class="btn btn-sm btn-outline-primary mt-3">바로가기</a>
             </div>
+        </div>
 
-            <!-- 교직원 연락처 게시판 -->
-            <div class="card board-card mb-4">
-                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                    <span><i class="bi bi-chat-dots-fill me-2"></i>교직원 연락처 게시판</span>
-                    <a href="/board/list?type=free" class="btn btn-sm btn-outline-light">더보기</a>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card feature-card p-4 text-center">
+                <div class="feature-icon" style="background:#fff3cd;">
+                    <i class="bi bi-megaphone-fill" style="color:#d97706;"></i>
                 </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <a href="/board/detail/101" class="text-decoration-none text-dark">
-                            오늘 점심 뭐 먹었나요?
-                            <span class="badge bg-danger badge-new ms-1">NEW</span>
-                        </a>
-                        <small class="text-muted">홍길동 · 댓글 12</small>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <a href="/board/detail/100" class="text-decoration-none text-dark">주말에 갈만한 카페 추천해주세요</a>
-                        <small class="text-muted">이순신 · 댓글 8</small>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <a href="/board/detail/99" class="text-decoration-none text-dark">Spring Boot 공부 팁 공유합니다</a>
-                        <small class="text-muted">김철수 · 댓글 5</small>
-                    </li>
-                </ul>
+                <h5>공지사항</h5>
+                <p>학교 주요 공지 및 행사 일정을 확인하세요.</p>
+                <a href="/board/list?type=notice" class="btn btn-sm btn-outline-warning mt-3">바로가기</a>
             </div>
+        </div>
 
+        <div class="col-sm-6 col-lg-3">
+            <div class="card feature-card p-4 text-center">
+                <div class="feature-icon" style="background:#d1fae5;">
+                    <i class="bi bi-question-circle-fill" style="color:#059669;"></i>
+                </div>
+                <h5>질문 / 답변</h5>
+                <p>업무 관련 궁금한 점을 자유롭게 질문하세요.</p>
+                <a href="/board/list?type=qna" class="btn btn-sm btn-outline-success mt-3">바로가기</a>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+            <div class="card feature-card p-4 text-center">
+                <div class="feature-icon" style="background:#dbeafe;">
+                    <i class="bi bi-images" style="color:#2563eb;"></i>
+                </div>
+                <h5>갤러리</h5>
+                <p>학교 행사·캠퍼스 사진을 함께 공유하세요.</p>
+                <a href="/board/list?type=gallery" class="btn btn-sm btn-outline-info mt-3">바로가기</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ── 캠퍼스 배너 ── -->
+<div class="container mb-5">
+    <div class="campus-banner">
+        <div class="mb-3" style="font-size:3rem; line-height:1;">
+            <i class="bi bi-building-fill text-purple" style="color:#7b3fa0;"></i>
+            <i class="bi bi-tree-fill mx-3" style="color:#3a7d44;"></i>
+            <i class="bi bi-sun-fill" style="color:#d97706;"></i>
+        </div>
+        <h4>원광보건대학교 익산 캠퍼스</h4>
+        <p class="mb-4">지식과 사랑으로 세상을 밝히는 원광보건대학교 교직원 여러분을 환영합니다.</p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <span class="badge rounded-pill px-3 py-2" style="background:#f3e8ff; color:#4a1a6b; font-size:.85rem;">
+                <i class="bi bi-geo-alt-fill me-1"></i>전라북도 익산시
+            </span>
+            <span class="badge rounded-pill px-3 py-2" style="background:#dbeafe; color:#1e40af; font-size:.85rem;">
+                <i class="bi bi-telephone-fill me-1"></i>063-840-1000
+            </span>
+            <span class="badge rounded-pill px-3 py-2" style="background:#d1fae5; color:#065f46; font-size:.85rem;">
+                <i class="bi bi-globe me-1"></i>www.wu.ac.kr
+            </span>
         </div>
     </div>
 </div>
