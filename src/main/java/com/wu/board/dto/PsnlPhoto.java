@@ -21,6 +21,7 @@ public class PsnlPhoto {
 
 /**
  *  @Data의 역활
+ *
  *  @Getter - 모든 필드의 getter 생성
  *  @Setter - 모든 필드의 setter 생성 (final 제외)
  *  @ToString - toString() 생성

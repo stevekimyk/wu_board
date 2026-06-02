@@ -11,7 +11,7 @@
     List로 반환 (여러 행이면 List<PsnlPhoto>)
 -->
     <!-- 10개씩 페이징
-        parameterType="map" 이걸호출할때 넘길인자가 map형식으로 있다는 것임
+        parameterType="map" 이걸 호출 할 때 넘길 인자가 map형식으로 있다는 것임
         resultType="com.wu.board.dto.PsnlPhoto" : 결과값을 PsnlPhoto DTO에 담음
     -->
     <select id="selectPage" parameterType="map" resultType="PsnlPhoto">
