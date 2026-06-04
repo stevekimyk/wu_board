@@ -60,26 +60,29 @@
     <!-- 교직원 연락처 게시판: 사원 사진 테이블 -->
     <div th:if="${type == 'free' and photoList != null}" class="card board-card">
         <table class="table table-board table-hover align-middle mb-0">
-            <thead>
-                <tr class="text-center">
+            <thead style="--bs-table-bg: #559fe8; --bs-table-color: #fff; color: #fff;">
+                <tr class="text-start">
+                    <th style="width: 100px;">부서코드</th>
+                    <th style="width: 300px;">부서명</th>
                     <th style="width: 100px;">사원번호</th>
                     <th style="width: 110px;">사원명</th>
-                    <th style="width: 100px;">부서코드</th>
-                    <th style="width: 400px;">부서명</th>
-                    <th style="width: 200px;">신분Code</th>
-                    <th style="width: 200px;">직급Code</th>
-                    <th style="width: 200px;">직종Code</th>
-                    <th style="width: 200px;">교원구분Code</th>
-                    <th style="width: 200px;">직책Code</th>
-                    <th style="width: 220px;">사진</th>
+                    <th style="width: 110px;">신분분류</th>
+                    <th style="width: 200px;">직급</th>
+                    <th style="width: 200px;">직종</th>
+                    <th style="width: 200px;">교원구분</th>
+                    <th style="width: 200px;">직책</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="p : ${photoList}">
-                    <td class="text-start  text-muted" th:text="${p.empno}"></td>
-                    <td class="text-start"             th:text="${p.empnoNm}"></td>
                     <td class="text-start  text-muted" th:text="${p.deptNo}"></td>
                     <td class="text-start"             th:text="${p.deptNoNm}"></td>
+                    <td class="text-start text-muted hover-photo" style="cursor:default;"
+                        th:data-empno="${p.empno}" th:data-name="${p.empnoNm}" th:data-dept="${p.deptNoNm}"
+                        th:text="${p.empno}"></td>
+                    <td class="text-start fw-bold hover-photo" style="cursor:default;"
+                        th:data-empno="${p.empno}" th:data-name="${p.empnoNm}" th:data-dept="${p.deptNoNm}"
+                        th:text="${p.empnoNm}"></td>
 
                     <td class="text-start  text-muted" th:text="${p.sclpstCdNm}"></td>
                     <td class="text-start  text-muted" th:text="${p.clsfCdNm}"></td>
@@ -87,16 +90,6 @@
                     <td class="text-start  text-muted" th:text="${p.tcherSeCdNm}"></td>
                     <td class="text-start  text-muted" th:text="${p.rspofcCdNm}"></td>
 
-                    <td class="text-center">
-                        <img th:if="${p.photo != null}"
-                             th:src="@{/board/photo/{empno}(empno=${p.empno})}"
-                             th:data-name="${p.empnoNm}"
-                             th:data-dept="${p.deptNoNm}"
-                             alt="사원사진"
-                             style="height:60px; width:auto; border-radius:4px; cursor:pointer;"
-                             onclick="openPhotoModal(this)">
-                        <span th:if="${p.photo == null}" class="text-muted small">사진없음</span>
-                    </td>
                 </tr>
                 <tr th:if="${#lists.isEmpty(photoList)}">
                     <td colspan="5" class="text-center text-muted py-5">
@@ -185,6 +178,18 @@
     </nav>
 </div>
 
+<!-- 사진 호버 툴팁 -->
+<div id="photoTooltip" style="position:fixed; display:none; z-index:9999; pointer-events:none;">
+    <div class="card shadow-lg" style="border-radius:10px; overflow:hidden; min-width:280px; text-align:center;">
+        <img id="tooltipImg" src="" alt="사원사진"
+             style="width:280px; height:auto; display:block; object-fit:cover;">
+        <div class="px-2 py-1 bg-white border-top">
+            <div class="fw-bold small" id="tooltipName"></div>
+            <div class="text-muted" style="font-size:.75rem;" id="tooltipDept"></div>
+        </div>
+    </div>
+</div>
+
 <footer th:replace="~{fragments/layout :: footer}"></footer>
 <th:block th:replace="~{fragments/layout :: js}"></th:block>
 
@@ -211,6 +216,31 @@
 </div>
 
 <script>
+/* 사원번호·사원명 셀 호버 시 사진 툴팁 표시 */
+(function () {
+    const tooltip  = document.getElementById('photoTooltip');
+    const tImg     = document.getElementById('tooltipImg');
+    const tName    = document.getElementById('tooltipName');
+    const tDept    = document.getElementById('tooltipDept');
+
+    document.querySelectorAll('.hover-photo').forEach(function (td) {
+        td.addEventListener('mouseenter', function () {
+            tImg.src          = '/board/photo/' + this.dataset.empno;
+            tName.textContent = this.dataset.name;
+            tDept.textContent = this.dataset.dept;
+            tooltip.style.display = 'block';
+        });
+        td.addEventListener('mousemove', function (e) {
+            tooltip.style.left = (e.clientX + 30) + 'px';
+            tooltip.style.top  = (e.clientY - 20) + 'px';
+        });
+        td.addEventListener('mouseleave', function () {
+            tooltip.style.display = 'none';
+            tImg.src = '';
+        });
+    });
+})();
+
 function openPhotoModal(img) {
     document.getElementById('modalPhoto').src   = img.src;
     document.getElementById('modalEmpName').textContent = img.dataset.name || '';

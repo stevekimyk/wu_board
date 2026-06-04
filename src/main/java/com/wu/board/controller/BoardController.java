@@ -51,7 +51,7 @@ public class BoardController {
         return list;
     }
 
-    private static final int PAGE_SIZE = 10;
+    private static final int PAGE_SIZE = 14;
 
     // 사원 상세 (GET /board/list?id=사원번호)
     @GetMapping(value = "/list", params = "id")
