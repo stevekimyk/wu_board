@@ -13,10 +13,15 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class PsnlPhoto {
     private String empno;
-    private String empnoNm;    // b.kor_nm
-    private String deptNo;     // b.dept_no
-    private String deptNoNm;   // wu_cmm.codenm.dept(b.dept_no)
-    private byte[] photo;      // BLOB
+    private String empnoNm;      // b.kor_nm
+    private String deptNo;       // b.dept_no
+    private String deptNoNm;     // wu_cmm.codenm.dept(b.dept_no)
+    private String sclpstCdNm;   // wu_cmm.codenm.comm(sclpst_cd)  신분
+    private String clsfCdNm;     // wu_cmm.codenm.comm(clsf_cd)    직급
+    private String jbgpCdNm;     // wu_cmm.codenm.comm(jbgp_cd)    직종
+    private String tcherSeCdNm;  // wu_cmm.codenm.comm(tcher_se_cd) 교원구분
+    private String rspofcCdNm;   // wu_cmm.codenm.comm(rspofc_cd)  직책
+    private byte[] photo;        // BLOB
 }
 
 /**

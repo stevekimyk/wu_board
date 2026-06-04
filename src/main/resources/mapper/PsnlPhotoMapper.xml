@@ -16,24 +16,33 @@
     -->
     <select id="selectPage" parameterType="map" resultType="PsnlPhoto">
         select empno
-             , empno_nm
+             , kor_nm   as empno_nm
              , dept_no
-             , dept_no_nm
+             , wu_cmm.codenm.dept(dept_no)     as dept_no_nm
+             , wu_cmm.codenm.comm(sclpst_cd)   as sclpst_cd_nm
+             , wu_cmm.codenm.comm(clsf_cd)     as clsf_cd_nm
+             , wu_cmm.codenm.comm(jbgp_cd)     as jbgp_cd_nm
+             , wu_cmm.codenm.comm(tcher_se_cd) as tcher_se_cd_nm
+             , wu_cmm.codenm.comm(rspofc_cd)   as rspofc_cd_nm
              , photo
         from (
                  select a.empno
-                      , b.kor_nm                          as empno_nm
-                      , b.dept_no
-                      , wu_cmm.codenm.dept(b.dept_no)    as dept_no_nm
                       , a.photo
+                      , b.kor_nm
+                      , b.dept_no
+                      , b.sclpst_cd
+                      , b.clsf_cd
+                      , b.jbgp_cd
+                      , b.tcher_se_cd
+                      , b.rspofc_cd
                       , row_number() over (order by b.dept_no, a.empno) as rn
                  from wu_adm.ta_psnl_photo_test a
-                          left join emp_mstr b on a.empno = b.empno
+                      left join emp_mstr b on a.empno = b.empno
                  where b.sclpst_sttus_cd in ('3050100','3050200')
                    and b.kor_nm is not null
                    and b.dept_no is not null
                    and a.photo is not null
-                   <if test="searchType == 'empno' and keyword != null and keyword != ''">   AND a.empno LIKE '%' || #{keyword} || '%'    </if>
+                   <if test="searchType == 'empno' and keyword   != null and keyword != ''"> AND a.empno LIKE '%' || #{keyword} || '%'    </if>
                    <if test="searchType == 'empnoNm' and keyword != null and keyword != ''"> AND b.kor_nm LIKE '%' || #{keyword} || '%'   </if>
         )
         where rn between #{startRow} AND #{endRow}

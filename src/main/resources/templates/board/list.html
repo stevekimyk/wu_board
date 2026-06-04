@@ -65,16 +65,28 @@
                     <th style="width: 100px;">사원번호</th>
                     <th style="width: 110px;">사원명</th>
                     <th style="width: 100px;">부서코드</th>
-                    <th>부서명</th>
-                    <th style="width: 120px;">사진</th>
+                    <th style="width: 400px;">부서명</th>
+                    <th style="width: 200px;">신분Code</th>
+                    <th style="width: 200px;">직급Code</th>
+                    <th style="width: 200px;">직종Code</th>
+                    <th style="width: 200px;">교원구분Code</th>
+                    <th style="width: 200px;">직책Code</th>
+                    <th style="width: 220px;">사진</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="p : ${photoList}">
-                    <td class="text-center text-muted" th:text="${p.empno}"></td>
-                    <td class="text-center" th:text="${p.empnoNm}"></td>
-                    <td class="text-center text-muted" th:text="${p.deptNo}"></td>
-                    <td th:text="${p.deptNoNm}"></td>
+                    <td class="text-start  text-muted" th:text="${p.empno}"></td>
+                    <td class="text-start"             th:text="${p.empnoNm}"></td>
+                    <td class="text-start  text-muted" th:text="${p.deptNo}"></td>
+                    <td class="text-start"             th:text="${p.deptNoNm}"></td>
+
+                    <td class="text-start  text-muted" th:text="${p.sclpstCdNm}"></td>
+                    <td class="text-start  text-muted" th:text="${p.clsfCdNm}"></td>
+                    <td class="text-start  text-muted" th:text="${p.jbgpCdNm}"></td>
+                    <td class="text-start  text-muted" th:text="${p.tcherSeCdNm}"></td>
+                    <td class="text-start  text-muted" th:text="${p.rspofcCdNm}"></td>
+
                     <td class="text-center">
                         <img th:if="${p.photo != null}"
                              th:src="@{/board/photo/{empno}(empno=${p.empno})}"
@@ -83,7 +95,7 @@
                              alt="사원사진"
                              style="height:60px; width:auto; border-radius:4px; cursor:pointer;"
                              onclick="openPhotoModal(this)">
-                        <span th:unless="${p.photo != null}" class="text-muted small">없음</span>
+                        <span th:if="${p.photo == null}" class="text-muted small">사진없음</span>
                     </td>
                 </tr>
                 <tr th:if="${#lists.isEmpty(photoList)}">
