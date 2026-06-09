@@ -26,25 +26,26 @@
              , wu_cmm.codenm.comm(rspofc_cd)   as rspofc_cd_nm
              , photo
         from (
-                 select a.empno
-                      , a.photo
-                      , b.kor_nm
-                      , b.dept_no
-                      , b.sclpst_cd
-                      , b.clsf_cd
-                      , b.jbgp_cd
-                      , b.tcher_se_cd
-                      , b.rspofc_cd
-                      , row_number() over (order by b.dept_no, a.empno) as rn
-                 from wu_adm.ta_psnl_photo_test a
-                      left join emp_mstr b on a.empno = b.empno
-                 where b.sclpst_sttus_cd in ('3050100','3050200')
-                   and b.kor_nm is not null
-                   and b.dept_no is not null
-                   and a.photo is not null
-                   <if test="searchType == 'empno' and keyword   != null and keyword != ''"> AND a.empno LIKE '%' || #{keyword} || '%'    </if>
-                   <if test="searchType == 'empnoNm' and keyword != null and keyword != ''"> AND b.kor_nm LIKE '%' || #{keyword} || '%'   </if>
-        )
+                select    a.empno
+                        , a.kor_nm
+                        , a.dept_no
+                        , a.sclpst_cd
+                        , a.clsf_cd
+                        , a.jbgp_cd
+                        , a.tcher_se_cd
+                        , a.rspofc_cd
+                        , b.photo
+                        , row_number() over (order by a.dept_no, a.empno) as rn
+                from  emp_mstr a
+                      left join  wu_adm.ta_psnl_photo b on a.empno = b.empno   <!--wu_adm.ta_psnl_photo_test a-->
+                where 1=1
+                        and a.sclpst_sttus_cd in ('3050100','3050200')
+                        and a.kor_nm is not null
+                        and a.dept_no is not null
+                       <!--and a.photo is not null-->
+                       <if test="searchType == 'empno' and keyword   != null and keyword != ''"> AND a.empno  LIKE '%' || #{keyword} || '%'   </if>
+                       <if test="searchType == 'empnoNm' and keyword != null and keyword != ''"> AND a.kor_nm LIKE '%' || #{keyword} || '%'   </if>
+            )
         where rn between #{startRow} AND #{endRow}
         order by dept_no, empno
     </select>

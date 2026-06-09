@@ -2,8 +2,8 @@ package com.wu.board.controller;
 
 import com.wu.board.dto.Post;
 import com.wu.board.dto.PsnlPhoto;
-import com.wu.board.mapper.PsnlPhotoMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.wu.board.service.PsnlPhotoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,16 +12,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/board")
+@RequiredArgsConstructor
 public class BoardController {
 
-    @Autowired
-    private PsnlPhotoMapper psnlPhotoMapper;
+    private final PsnlPhotoService psnlPhotoService;
 
     /**
      * 게시판 종류별 한글 라벨
@@ -51,12 +49,10 @@ public class BoardController {
         return list;
     }
 
-    private static final int PAGE_SIZE = 14;
-
     // 사원 상세 (GET /board/list?id=사원번호)
     @GetMapping(value = "/list", params = "id")
     public String empDetail(@RequestParam("id") String empno, Model model) {
-        PsnlPhoto p = psnlPhotoMapper.selectByEmpno(empno);
+        PsnlPhoto p = psnlPhotoService.findByEmpno(empno);
         model.addAttribute("emp", p);
         model.addAttribute("empno", empno);
         return "board/emp-detail";
@@ -75,19 +71,11 @@ public class BoardController {
         model.addAttribute("keyword",    q);
 
         if ("free".equals(type)) {
-            Map<String, Object> param = new HashMap<>();
-            param.put("searchType", searchType);
-            param.put("keyword",    q);
+            int totalCount = psnlPhotoService.countAll(searchType, q);
+            int totalPages = psnlPhotoService.calcTotalPages(totalCount);
+            page = psnlPhotoService.normalizePage(page, totalPages);
 
-            int totalCount = psnlPhotoMapper.selectCount(param);
-            int totalPages = (int) Math.ceil((double) totalCount / PAGE_SIZE);
-            if (page < 1) page = 1;
-            if (page > totalPages && totalPages > 0) page = totalPages;
-
-            param.put("startRow", (page - 1) * PAGE_SIZE + 1);
-            param.put("endRow",   page * PAGE_SIZE);
-
-            model.addAttribute("photoList",  psnlPhotoMapper.selectPage(param));
+            model.addAttribute("photoList",  psnlPhotoService.findPage(searchType, q, page));
             model.addAttribute("postList",   new ArrayList<>());
             model.addAttribute("totalCount", totalCount);
             model.addAttribute("totalPages", totalPages);
@@ -144,7 +132,7 @@ public class BoardController {
     @GetMapping("/photo/{empno}")
     @ResponseBody
     public ResponseEntity<byte[]> photo(@PathVariable String empno) {
-        PsnlPhoto p = psnlPhotoMapper.selectByEmpno(empno);
+        PsnlPhoto p = psnlPhotoService.findByEmpno(empno);
         if (p == null || p.getPhoto() == null) {
             return ResponseEntity.notFound().build();
         }
