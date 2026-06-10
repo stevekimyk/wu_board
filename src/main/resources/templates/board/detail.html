@@ -1,124 +1,120 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="|${post.title} - 커뮤니티 게시판|">게시글 상세</title>
-    <th:block th:replace="~{fragments/layout :: css}"></th:block>
-    <style>
-        .post-title { font-weight: 700; }
-        .post-meta { color: #6c757d; font-size: .9rem; }
-        .post-content {
-            min-height: 240px;
-            white-space: pre-wrap;
-            line-height: 1.7;
-            padding: 24px 0;
-        }
-        .comment-box {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 12px 16px;
-            margin-bottom: 10px;
-        }
-    </style>
+    <th:block layout:fragment="page-style">
+        <style>
+            .post-title { font-weight: 700; }
+            .post-meta { color: #6c757d; font-size: .9rem; }
+            .post-content {
+                min-height: 240px;
+                white-space: pre-wrap;
+                line-height: 1.7;
+                padding: 24px 0;
+            }
+            .comment-box {
+                background: #f8f9fa;
+                border-radius: 8px;
+                padding: 12px 16px;
+                margin-bottom: 10px;
+            }
+        </style>
+    </th:block>
 </head>
 <body>
+<div layout:fragment="content">
 
-<nav th:replace="~{fragments/layout :: navbar(${post.boardType})}"></nav>
-
-<div class="page-header">
-    <div class="container">
-        <h2><i class="bi bi-file-text me-2"></i>게시글 상세</h2>
-    </div>
-</div>
-
-<div class="container my-4">
-
-    <!-- 본문 카드 -->
-    <div class="card board-card mb-4">
-        <div class="card-body">
-            <h3 class="post-title" th:text="${post.title}">제목입니다</h3>
-            <div class="post-meta d-flex justify-content-between border-bottom pb-2 mt-3">
-                <div>
-                    <i class="bi bi-person-circle me-1"></i>
-                    <span th:text="${post.writer}">홍길동</span>
-                    <span class="mx-2">·</span>
-                    <i class="bi bi-calendar3 me-1"></i>
-                    <span th:text="${post.regDate}">2026-05-11</span>
-                </div>
-                <div>
-                    <i class="bi bi-eye me-1"></i>
-                    <span th:text="${post.viewCount}">124</span>
-                    <span class="mx-2">·</span>
-                    <i class="bi bi-chat-dots me-1"></i>
-                    <span th:text="${post.commentCount}">3</span>
-                </div>
-            </div>
-
-            <div class="post-content" th:text="${post.content}">본문 내용</div>
-
-            <!-- 좋아요/공유 -->
-            <div class="text-center my-3">
-                <button class="btn btn-outline-danger btn-sm">
-                    <i class="bi bi-heart"></i> 좋아요
-                </button>
-                <button class="btn btn-outline-secondary btn-sm ms-1">
-                    <i class="bi bi-share"></i> 공유
-                </button>
-                <button class="btn btn-outline-warning btn-sm ms-1">
-                    <i class="bi bi-flag"></i> 신고
-                </button>
-            </div>
-        </div>
-
-        <!-- 액션 버튼 -->
-        <div class="card-footer d-flex justify-content-between bg-white">
-            <a th:href="@{/board/list(type=${post.boardType})}" class="btn btn-secondary btn-sm">
-                <i class="bi bi-list-ul me-1"></i>목록
-            </a>
-            <div>
-                <a th:href="@{/board/write(type=${post.boardType}, id=${post.id})}"
-                   class="btn btn-primary btn-sm">
-                    <i class="bi bi-pencil me-1"></i>수정
-                </a>
-                <button class="btn btn-danger btn-sm"
-                        onclick="if(confirm('삭제하시겠습니까?')){}">
-                    <i class="bi bi-trash me-1"></i>삭제
-                </button>
-            </div>
+    <div class="page-header">
+        <div class="container">
+            <h2><i class="bi bi-file-text me-2"></i>게시글 상세</h2>
         </div>
     </div>
 
-    <!-- 댓글 -->
-    <div class="card board-card">
-        <div class="card-header bg-light">
-            <i class="bi bi-chat-square-text me-1"></i>
-            댓글 <span th:text="${#lists.size(comments)}">3</span>
-        </div>
-        <div class="card-body">
-            <div th:each="c : ${comments}" class="comment-box">
-                <div class="d-flex justify-content-between">
-                    <strong th:text="${c[0]}">이순신</strong>
-                    <small class="text-muted" th:text="${c[1]}">2026-05-11 10:23</small>
-                </div>
-                <div class="mt-1" th:text="${c[2]}">댓글 내용</div>
-            </div>
+    <div class="container my-4">
 
-            <!-- 댓글 작성 -->
-            <form class="mt-3">
-                <div class="input-group">
-                    <textarea class="form-control" rows="2" placeholder="댓글을 입력하세요"></textarea>
-                    <button class="btn btn-primary" type="button">
-                        <i class="bi bi-send"></i> 등록
+        <!-- 본문 카드 -->
+        <div class="card board-card mb-4">
+            <div class="card-body">
+                <h3 class="post-title" th:text="${post.title}">제목입니다</h3>
+                <div class="post-meta d-flex justify-content-between border-bottom pb-2 mt-3">
+                    <div>
+                        <i class="bi bi-person-circle me-1"></i>
+                        <span th:text="${post.writer}">홍길동</span>
+                        <span class="mx-2">·</span>
+                        <i class="bi bi-calendar3 me-1"></i>
+                        <span th:text="${post.regDate}">2026-05-11</span>
+                    </div>
+                    <div>
+                        <i class="bi bi-eye me-1"></i>
+                        <span th:text="${post.viewCount}">124</span>
+                        <span class="mx-2">·</span>
+                        <i class="bi bi-chat-dots me-1"></i>
+                        <span th:text="${post.commentCount}">3</span>
+                    </div>
+                </div>
+
+                <div class="post-content" th:text="${post.content}">본문 내용</div>
+
+                <div class="text-center my-3">
+                    <button class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-heart"></i> 좋아요
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm ms-1">
+                        <i class="bi bi-share"></i> 공유
+                    </button>
+                    <button class="btn btn-outline-warning btn-sm ms-1">
+                        <i class="bi bi-flag"></i> 신고
                     </button>
                 </div>
-            </form>
+            </div>
+
+            <div class="card-footer d-flex justify-content-between bg-white">
+                <a th:href="@{/board/list(type=${post.boardType})}" class="btn btn-secondary btn-sm">
+                    <i class="bi bi-list-ul me-1"></i>목록
+                </a>
+                <div>
+                    <a th:href="@{/board/write(type=${post.boardType}, id=${post.id})}"
+                       class="btn btn-primary btn-sm">
+                        <i class="bi bi-pencil me-1"></i>수정
+                    </a>
+                    <button class="btn btn-danger btn-sm"
+                            onclick="if(confirm('삭제하시겠습니까?')){}">
+                        <i class="bi bi-trash me-1"></i>삭제
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 댓글 -->
+        <div class="card board-card">
+            <div class="card-header bg-light">
+                <i class="bi bi-chat-square-text me-1"></i>
+                댓글 <span th:text="${#lists.size(comments)}">3</span>
+            </div>
+            <div class="card-body">
+                <div th:each="c : ${comments}" class="comment-box">
+                    <div class="d-flex justify-content-between">
+                        <strong th:text="${c[0]}">이순신</strong>
+                        <small class="text-muted" th:text="${c[1]}">2026-05-11 10:23</small>
+                    </div>
+                    <div class="mt-1" th:text="${c[2]}">댓글 내용</div>
+                </div>
+
+                <form class="mt-3">
+                    <div class="input-group">
+                        <textarea class="form-control" rows="2" placeholder="댓글을 입력하세요"></textarea>
+                        <button class="btn btn-primary" type="button">
+                            <i class="bi bi-send"></i> 등록
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
+
 </div>
-
-<footer th:replace="~{fragments/layout :: footer}"></footer>
-<th:block th:replace="~{fragments/layout :: js}"></th:block>
-
 </body>
 </html>

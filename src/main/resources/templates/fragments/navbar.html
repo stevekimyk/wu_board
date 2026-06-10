@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav th:fragment="navbar(active)" class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <i class="bi bi-layout-text-window-reverse me-2"></i>구)원광보건대 교직원 커뮤니티
+        </a>
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#mainNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" th:classappend="${active}=='home' ? 'active'" href="/">
+                        <i class="bi bi-house me-1"></i>홈
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:classappend="${active}=='notice' ? 'active'" href="/board/list?type=notice">
+                        <i class="bi bi-megaphone me-1"></i>공지사항
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:classappend="${active}=='qna' ? 'active'" href="/board/list?type=qna">
+                        <i class="bi bi-question-circle me-1"></i>질문/답변
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:classappend="${active}=='gallery' ? 'active'" href="/board/list?type=gallery">
+                        <i class="bi bi-images me-1"></i>갤러리
+                    </a>
+                </li>
+            </ul>
+            <form class="d-flex me-3" role="search" action="/board/list" method="get">
+                <input class="form-control form-control-sm me-2" type="search" name="q" placeholder="검색어 입력...">
+                <button class="btn btn-outline-light btn-sm" type="submit">
+                    <i class="bi bi-search"></i>
+                </button>
+            </form>
+            <div class="d-flex gap-2">
+                <a href="/login"  class="btn btn-outline-light btn-sm">로그인</a>
+                <a href="/signup" class="btn btn-primary btn-sm">회원가입</a>
+            </div>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

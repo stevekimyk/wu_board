@@ -1,14 +1,15 @@
 package com.wu.board.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class BasicController {
 
-    // 메인 페이지
     @GetMapping("/")
-    String index(){
+    String index(Model model){
+        model.addAttribute("activeMenu", "home");
         return "index";
     }
 }

@@ -4,6 +4,7 @@ import com.wu.board.dto.Post;
 import com.wu.board.dto.PsnlPhoto;
 import com.wu.board.service.PsnlPhotoService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequestMapping("/board")
 @RequiredArgsConstructor
@@ -55,6 +57,7 @@ public class BoardController {
         PsnlPhoto p = psnlPhotoService.findByEmpno(empno);
         model.addAttribute("emp", p);
         model.addAttribute("empno", empno);
+        model.addAttribute("activeMenu", "free");
         return "board/emp-detail";
     }
 
@@ -65,10 +68,14 @@ public class BoardController {
                        @RequestParam(value = "q",          required = false) String q,
                        @RequestParam(value = "page",       required = false, defaultValue = "1") int page,
                        Model model) {
+
+        log.info("게시판 목록 조회 - type={}, label={},searchtype={}, q={}", type, label(type), searchType,q);
+
         model.addAttribute("type",       type);
         model.addAttribute("typeLabel",  label(type));
         model.addAttribute("searchType", searchType);
         model.addAttribute("keyword",    q);
+        model.addAttribute("activeMenu", type);
 
         if ("free".equals(type)) {
             int totalCount = psnlPhotoService.countAll(searchType, q);
@@ -109,8 +116,9 @@ public class BoardController {
                 new String[]{"홍길동", "2026-05-11 11:30", "Spring Boot 2.7.7 기본 버전 그대로 썼습니다."}
         );
 
-        model.addAttribute("post",     post);
-        model.addAttribute("comments", comments);
+        model.addAttribute("post",       post);
+        model.addAttribute("comments",   comments);
+        model.addAttribute("activeMenu", post.getBoardType());
         return "board/detail";
     }
 
@@ -118,8 +126,9 @@ public class BoardController {
     @GetMapping("/write")
     public String writeForm(@RequestParam(value = "type", required = false, defaultValue = "free") String type,
                             Model model) {
-        model.addAttribute("type",      type);
-        model.addAttribute("typeLabel", label(type));
+        model.addAttribute("type",       type);
+        model.addAttribute("typeLabel",  label(type));
+        model.addAttribute("activeMenu", type);
         return "board/write";
     }
 

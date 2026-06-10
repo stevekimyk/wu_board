@@ -1,227 +1,213 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="|${typeLabel} - 커뮤니티 게시판|">게시판 목록</title>
-    <th:block th:replace="~{fragments/layout :: css}"></th:block>
 </head>
 <body>
+<div layout:fragment="content">
 
-<nav th:replace="~{fragments/layout :: navbar(${type})}"></nav>
-
-<!-- 페이지 헤더 -->
-<div class="page-header">
-    <div class="container">
-        <h2><i class="bi bi-list-ul me-2"></i><span th:text="${typeLabel}">교직원 연락처 게시판</span></h2>
-
-    </div>
-</div>
-
-<div class="container my-4">
-
-    <!-- 검색 + 글쓰기 -->
-    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-
-        <!-- 교직원 연락처 게시판: 사원번호/사원명 검색 -->
-        <form th:if="${type == 'free'}" class="d-flex" action="/board/list" method="get">
-            <input type="hidden" name="type" th:value="${type}">
-            <select class="form-select form-select-sm me-2" name="searchType" style="width:120px;">
-                <option value="empno"   th:selected="${searchType == 'empno'}">사원번호</option>
-                <option value="empnoNm" th:selected="${searchType == 'empnoNm'}">사원명</option>
-            </select>
-            <input class="form-control form-control-sm me-2" type="search" name="q"
-                   th:value="${keyword}" placeholder="검색어 입력" style="width:220px;">
-            <button class="btn btn-sm btn-dark" type="submit">
-                <i class="bi bi-search"></i> 검색
-            </button>
-        </form>
-
-        <!-- 그 외 게시판: 기존 검색 -->
-        <form th:unless="${type == 'free'}" class="d-flex" action="/board/list" method="get">
-            <input type="hidden" name="type" th:value="${type}">
-            <select class="form-select form-select-sm me-2" name="searchType" style="width:110px;">
-                <option value="title">제목</option>
-                <option value="writer">작성자</option>
-                <option value="content">내용</option>
-            </select>
-            <input class="form-control form-control-sm me-2" type="search" name="q"
-                   th:value="${keyword}" placeholder="검색어 입력" style="width:240px;">
-            <button class="btn btn-sm btn-dark" type="submit">
-                <i class="bi bi-search"></i> 검색
-            </button>
-        </form>
-
-        <a th:href="@{/board/write(type=${type})}" class="btn btn-primary btn-sm">
-            <i class="bi bi-pencil-square me-1"></i>글쓰기
-        </a>
-    </div>
-
-    <!-- 교직원 연락처 게시판: 사원 사진 테이블 -->
-    <div th:if="${type == 'free' and photoList != null}" class="card board-card">
-        <table class="table table-board table-hover align-middle mb-0">
-            <thead style="--bs-table-bg: #559fe8; --bs-table-color: #fff; color: #fff;">
-                <tr class="text-start">
-                    <th style="width: 100px;">부서코드</th>
-                    <th style="width: 300px;">부서명</th>
-                    <th style="width: 100px;">사원번호</th>
-                    <th style="width: 110px;">사원명</th>
-                    <th style="width: 110px;">신분분류</th>
-                    <th style="width: 200px;">직급</th>
-                    <th style="width: 200px;">직종</th>
-                    <th style="width: 200px;">교원구분</th>
-                    <th style="width: 200px;">직책</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="p : ${photoList}">
-                    <td class="text-start  text-muted" th:text="${p.deptNo}"></td>
-                    <td class="text-start"             th:text="${p.deptNoNm}"></td>
-                    <td class="text-start text-muted hover-photo" style="cursor:default;"
-                        th:data-empno="${p.empno}" th:data-name="${p.empnoNm}" th:data-dept="${p.deptNoNm}"
-                        th:text="${p.empno}"></td>
-                    <td class="text-start fw-bold hover-photo" style="cursor:default;"
-                        th:data-empno="${p.empno}" th:data-name="${p.empnoNm}" th:data-dept="${p.deptNoNm}"
-                        th:text="${p.empnoNm}"></td>
-
-                    <td class="text-start  text-muted" th:text="${p.sclpstCdNm}"></td>
-                    <td class="text-start  text-muted" th:text="${p.clsfCdNm}"></td>
-                    <td class="text-start  text-muted" th:text="${p.jbgpCdNm}"></td>
-                    <td class="text-start  text-muted" th:text="${p.tcherSeCdNm}"></td>
-                    <td class="text-start  text-muted" th:text="${p.rspofcCdNm}"></td>
-
-                </tr>
-                <tr th:if="${#lists.isEmpty(photoList)}">
-                    <td colspan="5" class="text-center text-muted py-5">
-                        데이터가 없습니다.
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- 일반 게시판: 기존 목록 테이블 -->
-    <div th:unless="${type == 'free'}" class="card board-card">
-        <table class="table table-board table-hover align-middle mb-0">
-            <thead>
-                <tr class="text-center">
-                    <th style="width: 70px;">번호</th>
-                    <th>제목</th>
-                    <th style="width: 110px;">작성자</th>
-                    <th style="width: 120px;">작성일</th>
-                    <th style="width: 80px;">조회</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="p : ${postList}"
-                    th:onclick="|location.href='/board/detail/${p.id}'|">
-                    <td class="text-center text-muted" th:text="${p.id}">100</td>
-                    <td>
-                        <a th:href="@{/board/detail/{id}(id=${p.id})}"
-                           class="text-decoration-none text-dark"
-                           th:text="${p.title}">제목</a>
-                        <span th:if="${p.isNew}" class="badge bg-danger badge-new ms-1">NEW</span>
-                        <span class="text-muted small ms-1"
-                              th:if="${p.commentCount > 0}"
-                              th:text="|[${p.commentCount}]|">[3]</span>
-                    </td>
-                    <td class="text-center" th:text="${p.writer}">홍길동</td>
-                    <td class="text-center text-muted" th:text="${p.regDate}">2026-05-11</td>
-                    <td class="text-center text-muted" th:text="${p.viewCount}">124</td>
-                </tr>
-                <tr th:if="${#lists.isEmpty(postList)}">
-                    <td colspan="5" class="text-center text-muted py-5">
-                        등록된 게시글이 없습니다.
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- 페이지네이션 (교직원 연락처 게시판 DB 페이징) -->
-    <nav th:if="${type == 'free' and totalPages != null and totalPages > 0}" class="mt-4">
-        <ul class="pagination justify-content-center">
-            <!-- 이전 -->
-            <li class="page-item" th:classappend="${curPage <= 1} ? 'disabled'">
-                <a class="page-link"
-                   th:href="@{/board/list(type=${type}, searchType=${searchType}, q=${keyword}, page=${curPage - 1})}">&laquo;</a>
-            </li>
-            <!-- 페이지 번호 -->
-            <li class="page-item"
-                th:each="i : ${#numbers.sequence(1, totalPages)}"
-                th:classappend="${i == curPage} ? 'active'">
-                <a class="page-link"
-                   th:href="@{/board/list(type=${type}, searchType=${searchType}, q=${keyword}, page=${i})}"
-                   th:text="${i}">1</a>
-            </li>
-            <!-- 다음 -->
-            <li class="page-item" th:classappend="${curPage >= totalPages} ? 'disabled'">
-                <a class="page-link"
-                   th:href="@{/board/list(type=${type}, searchType=${searchType}, q=${keyword}, page=${curPage + 1})}">&raquo;</a>
-            </li>
-        </ul>
-        <p class="text-center text-muted small mt-1">
-            전체 <span th:text="${totalCount}">0</span>건
-            &nbsp;|&nbsp;
-            <span th:text="${curPage}">1</span> / <span th:text="${totalPages}">1</span> 페이지
-        </p>
-    </nav>
-
-    <!-- 페이지네이션 (그 외 게시판 - 더미) -->
-    <nav th:unless="${type == 'free'}" class="mt-4">
-        <ul class="pagination justify-content-center">
-            <li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
-            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-        </ul>
-    </nav>
-</div>
-
-<!-- 사진 호버 툴팁 -->
-<div id="photoTooltip" style="position:fixed; display:none; z-index:9999; pointer-events:none;">
-    <div class="card shadow-lg" style="border-radius:10px; overflow:hidden; min-width:280px; text-align:center;">
-        <img id="tooltipImg" src="" alt="사원사진"
-             style="width:280px; height:auto; display:block; object-fit:cover;">
-        <div class="px-2 py-1 bg-white border-top">
-            <div class="fw-bold small" id="tooltipName"></div>
-            <div class="text-muted" style="font-size:.75rem;" id="tooltipDept"></div>
+    <!-- 페이지 헤더 -->
+    <div class="page-header">
+        <div class="container">
+            <h2><i class="bi bi-list-ul me-2"></i><span th:text="${typeLabel}">교직원 연락처 게시판</span></h2>
         </div>
     </div>
-</div>
 
-<footer th:replace="~{fragments/layout :: footer}"></footer>
-<th:block th:replace="~{fragments/layout :: js}"></th:block>
+    <div class="container my-4">
 
-<!-- 사원 사진 확대 모달 -->
-<div class="modal fade" id="photoModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="max-width:700px;">
-        <div class="modal-content" style="background:transparent; border:none; box-shadow:none;">
-            <div class="modal-body text-center p-0">
-                <div style="background:#fff; border-radius:12px; overflow:hidden; display:inline-block; box-shadow:0 8px 32px rgba(0,0,0,.35);">
-                    <div class="d-flex align-items-center justify-content-between px-3 py-2"
-                         style="background:#f8f9fa; border-bottom:1px solid #dee2e6;">
-                        <div class="text-start">
-                            <div class="fw-bold" id="modalEmpName" style="font-size:1rem;"></div>
-                            <div class="text-muted small" id="modalDeptName"></div>
+        <!-- 검색 + 글쓰기 -->
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+
+            <form th:if="${type == 'free'}" class="d-flex" action="/board/list" method="get">
+                <input type="hidden" name="type" th:value="${type}">
+                <select class="form-select form-select-sm me-2" name="searchType" style="width:120px;">
+                    <option value="empno"   th:selected="${searchType == 'empno'}">사원번호</option>
+                    <option value="empnoNm" th:selected="${searchType == 'empnoNm'}">사원명</option>
+                </select>
+                <input class="form-control form-control-sm me-2" type="search" name="q"
+                       th:value="${keyword}" placeholder="검색어 입력" style="width:220px;">
+                <button class="btn btn-sm btn-dark" type="submit">
+                    <i class="bi bi-search"></i> 검색
+                </button>
+            </form>
+
+            <form th:unless="${type == 'free'}" class="d-flex" action="/board/list" method="get">
+                <input type="hidden" name="type" th:value="${type}">
+                <select class="form-select form-select-sm me-2" name="searchType" style="width:110px;">
+                    <option value="title">제목</option>
+                    <option value="writer">작성자</option>
+                    <option value="content">내용</option>
+                </select>
+                <input class="form-control form-control-sm me-2" type="search" name="q"
+                       th:value="${keyword}" placeholder="검색어 입력" style="width:240px;">
+                <button class="btn btn-sm btn-dark" type="submit">
+                    <i class="bi bi-search"></i> 검색
+                </button>
+            </form>
+
+            <a th:href="@{/board/write(type=${type})}" class="btn btn-primary btn-sm">
+                <i class="bi bi-pencil-square me-1"></i>글쓰기
+            </a>
+        </div>
+
+        <!-- 교직원 연락처 게시판: 사원 사진 테이블 -->
+        <div th:if="${type == 'free' and photoList != null}" class="card board-card">
+            <table class="table table-board table-hover align-middle mb-0">
+                <thead style="--bs-table-bg: #559fe8; --bs-table-color: #fff; color: #fff;">
+                    <tr class="text-start">
+                        <th style="width: 100px;">부서코드</th>
+                        <th style="width: 300px;">부서명</th>
+                        <th style="width: 100px;">사원번호</th>
+                        <th style="width: 110px;">사원명</th>
+                        <th style="width: 110px;">신분분류</th>
+                        <th style="width: 200px;">직급</th>
+                        <th style="width: 200px;">직종</th>
+                        <th style="width: 200px;">교원구분</th>
+                        <th style="width: 200px;">직책</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="p : ${photoList}">
+                        <td class="text-start text-muted"  th:text="${p.deptNo}"></td>
+                        <td class="text-start"             th:text="${p.deptNoNm}"></td>
+                        <td class="text-start text-muted hover-photo" style="cursor:default;"
+                            th:data-empno="${p.empno}" th:data-name="${p.empnoNm}" th:data-dept="${p.deptNoNm}"
+                            th:text="${p.empno}"></td>
+                        <td class="text-start fw-bold hover-photo" style="cursor:default;"
+                            th:data-empno="${p.empno}" th:data-name="${p.empnoNm}" th:data-dept="${p.deptNoNm}"
+                            th:text="${p.empnoNm}"></td>
+                        <td class="text-start text-muted" th:text="${p.sclpstCdNm}"></td>
+                        <td class="text-start text-muted" th:text="${p.clsfCdNm}"></td>
+                        <td class="text-start text-muted" th:text="${p.jbgpCdNm}"></td>
+                        <td class="text-start text-muted" th:text="${p.tcherSeCdNm}"></td>
+                        <td class="text-start text-muted" th:text="${p.rspofcCdNm}"></td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(photoList)}">
+                        <td colspan="9" class="text-center text-muted py-5">데이터가 없습니다.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 일반 게시판: 기존 목록 테이블 -->
+        <div th:unless="${type == 'free'}" class="card board-card">
+            <table class="table table-board table-hover align-middle mb-0">
+                <thead>
+                    <tr class="text-center">
+                        <th style="width: 70px;">번호</th>
+                        <th>제목</th>
+                        <th style="width: 110px;">작성자</th>
+                        <th style="width: 120px;">작성일</th>
+                        <th style="width: 80px;">조회</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="p : ${postList}"
+                        th:onclick="|location.href='/board/detail/${p.id}'|">
+                        <td class="text-center text-muted" th:text="${p.id}">100</td>
+                        <td>
+                            <a th:href="@{/board/detail/{id}(id=${p.id})}"
+                               class="text-decoration-none text-dark"
+                               th:text="${p.title}">제목</a>
+                            <span th:if="${p.isNew}" class="badge bg-danger badge-new ms-1">NEW</span>
+                            <span class="text-muted small ms-1"
+                                  th:if="${p.commentCount > 0}"
+                                  th:text="|[${p.commentCount}]|">[3]</span>
+                        </td>
+                        <td class="text-center" th:text="${p.writer}">홍길동</td>
+                        <td class="text-center text-muted" th:text="${p.regDate}">2026-05-11</td>
+                        <td class="text-center text-muted" th:text="${p.viewCount}">124</td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(postList)}">
+                        <td colspan="5" class="text-center text-muted py-5">등록된 게시글이 없습니다.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 페이지네이션 (교직원 연락처 게시판 DB 페이징) -->
+        <nav th:if="${type == 'free' and totalPages != null and totalPages > 0}" class="mt-4">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${curPage <= 1} ? 'disabled'">
+                    <a class="page-link"
+                       th:href="@{/board/list(type=${type}, searchType=${searchType}, q=${keyword}, page=${curPage - 1})}">&laquo;</a>
+                </li>
+                <li class="page-item"
+                    th:each="i : ${#numbers.sequence(1, totalPages)}"
+                    th:classappend="${i == curPage} ? 'active'">
+                    <a class="page-link"
+                       th:href="@{/board/list(type=${type}, searchType=${searchType}, q=${keyword}, page=${i})}"
+                       th:text="${i}">1</a>
+                </li>
+                <li class="page-item" th:classappend="${curPage >= totalPages} ? 'disabled'">
+                    <a class="page-link"
+                       th:href="@{/board/list(type=${type}, searchType=${searchType}, q=${keyword}, page=${curPage + 1})}">&raquo;</a>
+                </li>
+            </ul>
+            <p class="text-center text-muted small mt-1">
+                전체 <span th:text="${totalCount}">0</span>건
+                &nbsp;|&nbsp;
+                <span th:text="${curPage}">1</span> / <span th:text="${totalPages}">1</span> 페이지
+            </p>
+        </nav>
+
+        <!-- 페이지네이션 (그 외 게시판 - 더미) -->
+        <nav th:unless="${type == 'free'}" class="mt-4">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- 사진 호버 툴팁 -->
+    <div id="photoTooltip" style="position:fixed; display:none; z-index:9999; pointer-events:none;">
+        <div class="card shadow-lg" style="border-radius:10px; overflow:hidden; min-width:280px; text-align:center;">
+            <img id="tooltipImg" src="" alt="사원사진"
+                 style="width:280px; height:auto; display:block; object-fit:cover;">
+            <div class="px-2 py-1 bg-white border-top">
+                <div class="fw-bold small" id="tooltipName"></div>
+                <div class="text-muted" style="font-size:.75rem;" id="tooltipDept"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 사원 사진 확대 모달 -->
+    <div class="modal fade" id="photoModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width:700px;">
+            <div class="modal-content" style="background:transparent; border:none; box-shadow:none;">
+                <div class="modal-body text-center p-0">
+                    <div style="background:#fff; border-radius:12px; overflow:hidden; display:inline-block; box-shadow:0 8px 32px rgba(0,0,0,.35);">
+                        <div class="d-flex align-items-center justify-content-between px-3 py-2"
+                             style="background:#f8f9fa; border-bottom:1px solid #dee2e6;">
+                            <div class="text-start">
+                                <div class="fw-bold" id="modalEmpName" style="font-size:1rem;"></div>
+                                <div class="text-muted small" id="modalDeptName"></div>
+                            </div>
+                            <button type="button" class="btn-close ms-3" data-bs-dismiss="modal"></button>
                         </div>
-                        <button type="button" class="btn-close ms-3" data-bs-dismiss="modal"></button>
+                        <img id="modalPhoto" src="" alt="사원사진"
+                             style="max-width:648px; max-height:756px; width:100%; object-fit:contain; display:block;">
                     </div>
-                    <img id="modalPhoto" src="" alt="사원사진"
-                         style="max-width:648px; max-height:756px; width:100%; object-fit:contain; display:block;">
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 
+<th:block layout:fragment="page-script">
 <script>
-/* 사원번호·사원명 셀 호버 시 사진 툴팁 표시 */
 (function () {
-    const tooltip  = document.getElementById('photoTooltip');
-    const tImg     = document.getElementById('tooltipImg');
-    const tName    = document.getElementById('tooltipName');
-    const tDept    = document.getElementById('tooltipDept');
+    const tooltip = document.getElementById('photoTooltip');
+    const tImg    = document.getElementById('tooltipImg');
+    const tName   = document.getElementById('tooltipName');
+    const tDept   = document.getElementById('tooltipDept');
 
     document.querySelectorAll('.hover-photo').forEach(function (td) {
         td.addEventListener('mouseenter', function () {
@@ -242,12 +228,13 @@
 })();
 
 function openPhotoModal(img) {
-    document.getElementById('modalPhoto').src   = img.src;
-    document.getElementById('modalEmpName').textContent = img.dataset.name || '';
+    document.getElementById('modalPhoto').src            = img.src;
+    document.getElementById('modalEmpName').textContent  = img.dataset.name || '';
     document.getElementById('modalDeptName').textContent = img.dataset.dept || '';
     new bootstrap.Modal(document.getElementById('photoModal')).show();
 }
 </script>
+</th:block>
 
 </body>
 </html>
