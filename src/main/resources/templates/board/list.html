@@ -5,6 +5,12 @@
       layout:decorate="~{fragments/layout}">
 <head>
     <title th:text="|${typeLabel} - 커뮤니티 게시판|">게시판 목록</title>
+    <th:block layout:fragment="page-style">
+        <style>
+            .table-board tbody tr:nth-child(odd)  { --bs-table-bg: #ffffff; }
+            .table-board tbody tr:nth-child(even) { --bs-table-bg: #eeeeee; }
+        </style>
+    </th:block>
 </head>
 <body>
 <div layout:fragment="content">
