@@ -1,0 +1,151 @@
+/* ── 히어로 ── */
+.hero {
+    background: linear-gradient(150deg, #4a1a6b 0%, #7b3fa0 45%, #3a6abf 100%);
+    color: white;
+    padding: 70px 0 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.hero-icon-row {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    margin-bottom: 28px;
+}
+.hero-icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    opacity: 0.82;
+    font-size: .8rem;
+    letter-spacing: .03em;
+}
+.hero-icon-item i {
+    font-size: 2rem;
+    background: rgba(255,255,255,.15);
+    border-radius: 50%;
+    padding: 14px;
+    width: 58px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.hero h1   { font-size: 2.3rem; font-weight: 800; letter-spacing: -.02em; }
+.hero .lead { font-size: 1.05rem; opacity: .85; max-width: 520px; margin: 0 auto 28px; }
+.btn-contact {
+    background: #fff;
+    color: #4a1a6b;
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 14px 38px;
+    border-radius: 50px;
+    border: none;
+    box-shadow: 0 4px 18px rgba(0,0,0,.25);
+    transition: transform .2s, box-shadow .2s;
+    text-decoration: none;
+}
+.btn-contact:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,.3);
+    color: #4a1a6b;
+}
+
+/* ── 특징 카드 ── */
+.feature-card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.08);
+    transition: transform .2s, box-shadow .2s;
+    height: 100%;
+}
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0,0,0,.14);
+}
+.feature-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.7rem;
+    margin: 0 auto 16px;
+}
+.feature-card h5 { font-weight: 700; font-size: 1rem; }
+.feature-card p  { font-size: .88rem; color: #6c757d; margin: 0; }
+
+/* ── 캠퍼스 배너 ── */
+.campus-banner {
+    background: linear-gradient(135deg, #f8f3ff, #eef4ff);
+    border-radius: 20px;
+    padding: 48px 36px;
+    text-align: center;
+    border: 1px solid #e2d9f3;
+}
+.campus-banner h4 { font-weight: 700; color: #4a1a6b; }
+.campus-banner p  { color: #555; font-size: .92rem; }
+
+.section-label {
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #7b3fa0;
+}
+
+/* ── 날씨 위젯 ── */
+.weather-card {
+    background: linear-gradient(135deg, #1a6b9a, #2980b9);
+    color: #fff;
+    border-radius: 16px;
+    padding: 20px 28px;
+    box-shadow: 0 4px 20px rgba(0,0,0,.12);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.weather-icon img  { width: 72px; height: 72px; }
+.weather-temp      { font-size: 2.4rem; font-weight: 800; line-height: 1; }
+.weather-desc      { font-size: .95rem; opacity: .9; text-transform: capitalize; margin-top: 2px; }
+.weather-meta      { font-size: .82rem; opacity: .8; margin-top: 6px; }
+.weather-city      { font-size: .78rem; opacity: .7; margin-bottom: 2px; }
+.weather-error {
+    background: #f8f9fa;
+    border: 1px dashed #dee2e6;
+    border-radius: 16px;
+    padding: 16px 24px;
+    color: #6c757d;
+    font-size: .9rem;
+    text-align: center;
+}
+
+/* ── 우편번호 위젯 ── */
+.postcode-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.08);
+    padding: 24px 28px;
+}
+.postcode-card .input-group .form-control { border-radius: 8px 0 0 8px; }
+.postcode-card .input-group .btn          { border-radius: 0 8px 8px 0; }
+.postcode-result-row { cursor: default; }
+.postcode-result-row:hover td { background-color: #f0f4ff; }
+.badge-zip {
+    background: #4a1a6b;
+    color: #fff;
+    font-size: .82rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    letter-spacing: .04em;
+}
